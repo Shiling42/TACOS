@@ -346,9 +346,9 @@ All quantities are normalized by RT:
 If you use this code in your research, please cite:
 
 ```bibtex
-@article{thermodynamic_space_2024,
+@article{liang2024thermodynamic,
   title={Thermodynamic Space of Chemical Reaction Networks},
-  author={...},
+  author={Liang, Shiling and De Los Rios, Paolo and Busiello, Daniel Maria},
   journal={arXiv preprint arXiv:2407.11498},
   year={2024}
 }

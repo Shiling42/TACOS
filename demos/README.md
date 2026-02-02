@@ -318,6 +318,17 @@ where the min/max are over EFMs with e_ρ ≠ 0.
 
 ## References
 
-1. **Paper**: arXiv:2407.11498 - "Thermodynamic Space of Chemical Reaction Networks"
+1. **Paper**: Liang, S., De Los Rios, P., & Busiello, D. M. (2024). *Thermodynamic Space of Chemical Reaction Networks*. arXiv:2407.11498
 2. **EFM Algorithms**: See `docs/EFM_ALGORITHMS.md` for detailed algorithm descriptions
 3. **pycddlib**: https://github.com/mcmtroffaes/pycddlib
+
+## Citation
+
+```bibtex
+@article{liang2024thermodynamic,
+  title={Thermodynamic Space of Chemical Reaction Networks},
+  author={Liang, Shiling and De Los Rios, Paolo and Busiello, Daniel Maria},
+  journal={arXiv preprint arXiv:2407.11498},
+  year={2024}
+}
+```

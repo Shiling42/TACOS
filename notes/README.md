@@ -22,3 +22,14 @@ python demos/demo_04_efm_methods.py
 ```
 
 Add `--svg` flag to also generate SVG versions.
+
+## Citation
+
+```bibtex
+@article{liang2024thermodynamic,
+  title={Thermodynamic Space of Chemical Reaction Networks},
+  author={Liang, Shiling and De Los Rios, Paolo and Busiello, Daniel Maria},
+  journal={arXiv preprint arXiv:2407.11498},
+  year={2024}
+}
+```
