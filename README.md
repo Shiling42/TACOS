@@ -4,12 +4,17 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![arXiv](https://img.shields.io/badge/arXiv-2407.11498-b31b1b.svg)](https://arxiv.org/abs/2407.11498)
 
-**TACOS** (Thermodynamic space for Accessible Concentrations of Out-of-equilibrium Stationary chemical reaction networks) is a Python package for computing fundamental thermodynamic bounds on chemical reaction networks (CRNs) at steady state.
+**TACOS** (**T**hermodynamic space for **A**ccessible **C**oncentrations of **O**ut-of-equilibrium **S**tationary chemical reaction networks) is a Python package for computing fundamental thermodynamic bounds on chemical reaction networks (CRNs) at steady state.
 
 This repository provides the official implementation accompanying the paper:
 
 > **Thermodynamic Space of Chemical Reaction Networks**
-> arXiv:2407.11498
+>
+> Shiling Liang, Paolo De Los Rios, Daniel Maria Busiello
+>
+> arXiv:2407.11498 (2024)
+>
+> https://arxiv.org/abs/2407.11498
 
 ## Overview
 
