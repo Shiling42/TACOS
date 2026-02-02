@@ -73,8 +73,9 @@ venv.bak/
 .DS_Store
 
 # Project specific - generated output
-notes/*.png
-notes/*.svg
+# Exclude most generated figures but keep demo outputs
+notes/fig_*.png
+notes/fig_*.svg
 notes/*.npz
 *.npz
 
