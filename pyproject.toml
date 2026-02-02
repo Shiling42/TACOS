@@ -1,0 +1,48 @@
+[project]
+name = "tacos"
+version = "1.0.0"
+description = "TACOS: Thermodynamic space for Accessible Concentrations of Out-of-equilibrium Stationary chemical reaction networks"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+keywords = ["chemical reaction networks", "thermodynamics", "elementary flux modes", "non-equilibrium", "steady state"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "sympy>=1.12",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+plot = ["matplotlib>=3.7"]
+full = [
+    "pytest>=8.0",
+    "matplotlib>=3.7",
+    "pycddlib>=2.1.8",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/YOUR_USERNAME/tacos"
+"Paper" = "https://arxiv.org/abs/2407.11498"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["crn_bounds*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
