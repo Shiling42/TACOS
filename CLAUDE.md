@@ -31,6 +31,7 @@ python3 scripts/sample_self_assembly_relaxation_panels.py --outdir ./notes --n 6
 ### Key Modules (crn_bounds/)
 
 - **api.py**: Main entry point. `CRNInput` dataclass for input, `run_pipeline()` orchestrates the full analysis, returns `PipelineResult`
+- **utils.py**: Shared utilities (FLOAT_TOL, vector canonicalization, EFM affinity ratios, coordinate mapping)
 - **split.py**: Converts reversible reactions to forward/backward irreversible representation for cddlib compatibility
 - **efm.py**: EFM enumeration via `pycddlib` (polyhedral cone extreme rays)
 - **affinity.py**: Steady-state affinity bounds from EFMs (paper Eq. 20/24)
@@ -39,6 +40,15 @@ python3 scripts/sample_self_assembly_relaxation_panels.py --outdir ./notes --n 6
 - **probes.py**: Auto-detection of probe candidates from small-integer combinations
 - **ldb.py**: Local detailed balance rate sampling for simulation validation
 - **model.py**: Mass-action kinetics, ODE relaxation, steady-state root-finding
+
+### Tutorial
+
+Interactive Jupyter notebook at `demos/tutorial.ipynb` covers:
+- Defining a CRN (stoichiometry, chemical potentials, external driving)
+- Running the analysis pipeline
+- Visualizing affinity and concentration bounds
+- Validating bounds with LDB-consistent simulations
+- Chemical probe analysis
 
 ### Conventions
 
@@ -57,16 +67,27 @@ python3 scripts/sample_self_assembly_relaxation_panels.py --outdir ./notes --n 6
 | pytest ≥8.0 | Testing |
 | matplotlib | Scripts only (plotting) |
 
-## Test Organization
+## Test Organization (21 tests)
 
 - `test_api_*.py`: Integration tests using `run_pipeline()` on paper examples (self-assembly, Schlögl, Frank/chiral)
 - `test_concentration_bounds_general.py`: Comprehensive tests for general Π-pathway concentration bounds
 - `test_efm.py`, `test_split.py`, `test_affinity.py`: Unit tests for individual algorithms
 - `test_conservation_and_probe.py`: Conservation law and probe generation tests
 
-## Generated Figures
+Run all tests: `pytest -v`
 
-Run scripts to generate validation figures in `notes/`:
+## Demos
+
+Run demo scripts (outputs saved to `notes/`):
+```bash
+python demos/demo_01_self_assembly.py   # Fuel-driven self-assembly with simulation validation
+python demos/demo_02_schlogl.py         # Schlögl bistability
+python demos/demo_03_chiral.py          # Chiral symmetry breaking (Frank model)
+python demos/demo_04_efm_methods.py     # EFM algorithm comparison
+```
+
+## Generated Figures (scripts/)
+
 ```bash
 python3 scripts/plot_self_assembly_from_efm.py --out notes/fig_self_assembly_efm.png --DeltaMu_over_RT 2.0
 python3 scripts/plot_schlogl_bounds.py --out notes/fig_schlogl_bounds.png
