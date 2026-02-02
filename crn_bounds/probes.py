@@ -24,19 +24,13 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .conservation import primitive_integer_basis
+from .utils import canonicalize_vector
 
 
 def _primitive_col(v: NDArray[np.int64]) -> NDArray[np.int64]:
-    v = v.copy()
-    g = np.gcd.reduce(np.abs(v[v != 0])) if np.any(v != 0) else 1
-    v = v // g
-    # sign normalize
-    for x in v:
-        if x != 0:
-            if x < 0:
-                v = -v
-            break
-    return v
+    """Make an integer vector primitive (divide by GCD, first nonzero positive)."""
+    result = canonicalize_vector(v.astype(float), make_primitive=True)
+    return result.astype(np.int64)
 
 
 def generate_probe_candidates(

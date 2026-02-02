@@ -29,6 +29,7 @@ from .efm import enumerate_extreme_rays
 from .affinity import compute_affinity_bound
 from .probes import generate_probe_candidates
 from .concentration_bounds import probe_log_ratio_bound, reaction_log_ratio_bound, LogRatioBound
+from .utils import map_split_efms_to_original
 
 
 @dataclass(frozen=True)
@@ -96,21 +97,9 @@ def run_pipeline(
     efms_split = enumerate_extreme_rays(split.stoich_split.Sx)
 
     # map back to original coordinates (filter zeros; keep a canonical sign)
-    efms_orig: list[np.ndarray] = []
-    for e in efms_split:
-        v = np.zeros(nR)
-        for k, (rho, sgn) in enumerate(zip(split.split_to_orig, split.split_sign)):
-            v[rho] += sgn * e[k]
-        if np.linalg.norm(v) > 1e-12:
-            # canonicalize sign so first nonzero component is positive
-            for x in v:
-                if abs(x) > 1e-12:
-                    if x < 0:
-                        v = -v
-                    break
-            # de-duplicate identical directions
-            if not any(np.allclose(v, u, atol=1e-12) for u in efms_orig):
-                efms_orig.append(v)
+    efms_orig = map_split_efms_to_original(
+        efms_split, split.split_to_orig, split.split_sign, nR
+    )
 
     # compute bounds for each rho
     bounds: list[ReactionAffinityBounds] = []
@@ -146,13 +135,10 @@ def run_pipeline(
 
             # map back to original+probe coordinates
             nR_ext = nR + 1
-            efms_orig_ext: list[np.ndarray] = []
-            for e in efms_split_ext:
-                v = np.zeros(nR_ext)
-                for k, (rho, sgn) in enumerate(zip(split_ext.split_to_orig, split_ext.split_sign)):
-                    v[rho] += sgn * e[k]
-                if np.linalg.norm(v) > 1e-12:
-                    efms_orig_ext.append(v)
+            efms_orig_ext = map_split_efms_to_original(
+                efms_split_ext, split_ext.split_to_orig, split_ext.split_sign, nR_ext,
+                canonicalize=False, deduplicate=False  # Preserve original probe behavior
+            )
 
             # bound for probe reaction is index nR
             lo, hi = compute_affinity_bound(nR, A=A_Y_ext, E=efms_orig_ext, include_zero=False)

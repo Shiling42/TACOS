@@ -15,13 +15,14 @@ NOTE: This is intended for small/moderate networks (paper examples).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from fractions import Fraction
 from math import gcd
 from functools import reduce
 
 import numpy as np
 from numpy.typing import NDArray
+
+from .utils import canonicalize_vector
 
 
 def _lcm(a: int, b: int) -> int:
@@ -32,21 +33,10 @@ def _lcm_list(xs: list[int]) -> int:
     return reduce(_lcm, xs, 1)
 
 
-def _gcd_list(xs: list[int]) -> int:
-    xs = [abs(x) for x in xs if x != 0]
-    return reduce(gcd, xs, 0) if xs else 1
-
-
 def _primitive_int(vec: NDArray[np.int64]) -> NDArray[np.int64]:
-    g = _gcd_list(vec.tolist())
-    v = vec // g
-    # make first nonzero positive
-    for x in v:
-        if x != 0:
-            if x < 0:
-                v = -v
-            break
-    return v
+    """Make an integer vector primitive (divide by GCD, first nonzero positive)."""
+    v = canonicalize_vector(vec.astype(float), make_primitive=True)
+    return v.astype(np.int64)
 
 
 def rational_nullspace_left(Sx: NDArray[np.float64]) -> list[list[Fraction]]:

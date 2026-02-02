@@ -119,6 +119,22 @@ for pr in result.probes:
     print(f"  s={pr.probe_sx}: ln-ratio ∈ [{pr.log_ratio_bound.lo:.3f}, {pr.log_ratio_bound.hi:.3f}]")
 ```
 
+## Tutorial
+
+For a comprehensive introduction to TACOS, see the interactive Jupyter notebook:
+
+```bash
+jupyter notebook demos/tutorial.ipynb
+```
+
+The tutorial covers:
+- Defining a chemical reaction network
+- Running the analysis pipeline
+- Interpreting affinity and concentration bounds
+- Visualizing the thermodynamic space
+- Validating bounds with simulations
+- Using chemical probes
+
 ## Demonstrations
 
 The `demos/` directory contains four complete examples:
@@ -186,6 +202,7 @@ python scripts/benchmark_efm_enumeration.py --out notes/fig_EFM_search.png --n-m
 tacos/
 ├── crn_bounds/                  # Core library
 │   ├── api.py                   # Main API: CRNInput, run_pipeline
+│   ├── utils.py                 # Shared utilities
 │   ├── efm.py                   # EFM enumeration via pycddlib
 │   ├── affinity.py              # Affinity bounds computation
 │   ├── concentration_bounds.py  # Log-ratio bounds (Π-pathway theory)
@@ -196,15 +213,16 @@ tacos/
 │   ├── model.py                 # Mass-action kinetics & ODE relaxation
 │   └── self_assembly.py         # Self-assembly CRN definition
 │
-├── demos/                       # Demonstration scripts
+├── demos/                       # Demonstrations and tutorial
 │   ├── README.md                # Demo documentation
+│   ├── tutorial.ipynb           # Interactive tutorial (start here!)
 │   ├── demo_01_self_assembly.py # Fuel-driven self-assembly
 │   ├── demo_02_schlogl.py       # Schlögl bistability
 │   ├── demo_03_chiral.py        # Chiral symmetry breaking
 │   └── demo_04_efm_methods.py   # EFM algorithm comparison
 │
 ├── scripts/                     # Analysis & plotting scripts
-├── tests/                       # Test suite (22 tests)
+├── tests/                       # Test suite (21 tests)
 ├── docs/                        # Algorithm documentation
 │   └── EFM_ALGORITHMS.md        # Detailed EFM algorithm descriptions
 │
@@ -324,7 +342,7 @@ pytest -v
 pytest tests/test_api_self_assembly.py -v
 ```
 
-All 22 tests cover:
+All 21 tests cover:
 - EFM enumeration correctness
 - Affinity bound computation
 - Concentration bounds (general Π-pathway theory)

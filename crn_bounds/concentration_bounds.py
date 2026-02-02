@@ -37,6 +37,8 @@ from typing import Sequence
 import numpy as np
 from numpy.typing import NDArray
 
+from .utils import FLOAT_TOL, compute_efm_affinity_ratios, canonicalize_with_bounds
+
 
 @dataclass(frozen=True)
 class LogRatioBound:
@@ -46,17 +48,11 @@ class LogRatioBound:
 
 
 def _canonical_sign_lastpos(s: NDArray[np.float64], lo: float, hi: float) -> tuple[NDArray[np.float64], float, float]:
-    """Flip sign so that the last nonzero entry is positive, adjusting interval."""
-    s0 = s.copy()
-    for x in reversed(s0):
-        if abs(x) > 1e-12:
-            if x < 0:
-                s0 = -s0
-                lo, hi = -hi, -lo
-            break
-    if lo > hi:
-        lo, hi = hi, lo
-    return s0, float(lo), float(hi)
+    """Flip sign so that the last nonzero entry is positive, adjusting interval.
+
+    Note: This is a thin wrapper around canonicalize_with_bounds for backwards compatibility.
+    """
+    return canonicalize_with_bounds(s, lo, hi, tol=FLOAT_TOL)
 
 
 def probe_log_ratio_bound(
@@ -74,7 +70,7 @@ def probe_log_ratio_bound(
     ratios = []
     for e in efms_ext:
         e_p = float(e[probe_index])
-        if abs(e_p) < 1e-12:
+        if abs(e_p) < FLOAT_TOL:
             continue
         A_e = float(e @ A_Y_ext)
         ratios.append(A_e / e_p)
@@ -128,19 +124,8 @@ def reaction_log_ratio_bound(
         return LogRatioBound(s=s, lo=float("-inf"), hi=float("inf"))
 
     # Compute per-reaction normalized cycle affinities: a = (e^T A_Y) / e_ρ
-    # Separate positive and negative EFM participation (like affinity.py)
-    pos_ratios: list[float] = []
-    neg_ratios: list[float] = []
-
-    for e in efms:
-        e_r = float(e[rho])
-        if abs(e_r) < 1e-12:
-            continue
-        ratio = float((e @ A_Y) / e_r)
-        if e_r > 0:
-            pos_ratios.append(ratio)
-        else:
-            neg_ratios.append(ratio)
+    # Separate positive and negative EFM participation
+    pos_ratios, neg_ratios = compute_efm_affinity_ratios(rho, A_Y, list(efms), tol=FLOAT_TOL)
 
     if not pos_ratios and not neg_ratios:
         # Reaction not in any EFM: at detailed balance (A_ρ^ss = 0)

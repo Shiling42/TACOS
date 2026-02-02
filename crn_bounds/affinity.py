@@ -13,6 +13,8 @@ import numpy as np
 from numpy.typing import NDArray
 from typing import Sequence
 
+from .utils import FLOAT_TOL, compute_efm_affinity_ratios
+
 
 def compute_cycle_affinity(
     e: NDArray[np.float64],  # (nR,) EFM vector
@@ -68,7 +70,7 @@ def compute_probe_bound(
         # - Original reactions: use e as is
         # - Probe reaction: project via stoichiometry
         probe_coeff = float(probe_stoich.T @ (S @ e))
-        if probe_coeff == 0:  # probe not involved in this cycle
+        if abs(probe_coeff) < FLOAT_TOL:  # probe not involved in this cycle
             continue
 
         A_e = compute_cycle_affinity(e, A, internal=False)
@@ -93,34 +95,19 @@ def compute_affinity_bound(
     include_zero: bool = False,       # set True for paper Eq. (20)
 ) -> tuple[float, float]:
     """Paper Eq. (20): Local affinity bounds from EFM affinities.
-    
+
     Args:
         rho: target reaction index
         A: affinity vector (nR,)
         E: list of EFM/extreme ray vectors [(nR,), ...]
         include_zero: if True, enforce full Eq. (20) bounds
             with zero-affinity case.
-    
+
     Returns:
         (lower, upper) bounds on steady-state affinity.
     """
+    pos_ratios, neg_ratios = compute_efm_affinity_ratios(rho, A, list(E))
 
-    pos_ratios: list[float] = []  # A_e^Y/e_rho for e_rho > 0
-    neg_ratios: list[float] = []  # A_e^Y/e_rho for e_rho < 0
-
-    for e in E:
-        e_rho = e[rho]  # participation count of rho in this EFM
-        if e_rho == 0:  # rho not in this EFM
-            continue
-
-        A_e = compute_cycle_affinity(e, A, internal=False)
-        ratio = A_e / e_rho  # normalize by participation
-
-        if e_rho > 0:
-            pos_ratios.append(ratio)
-        else:  # e_rho < 0
-            neg_ratios.append(ratio)
-    
     if not pos_ratios and not neg_ratios:
         # No EFMs contain rho: zero affinity (detailed balance)
         return (0.0, 0.0)
@@ -130,7 +117,7 @@ def compute_affinity_bound(
         neg_bound = min(neg_ratios) if neg_ratios else 0.0
         pos_bound = max(pos_ratios) if pos_ratios else 0.0
         return (min(0.0, neg_bound), max(0.0, pos_bound))
-    
+
     else:
         # Simple bounds from probe-like situation: no zero-affinity case
         # (used in the paper's Eq. (24) for chemical probe construction)

@@ -1,8 +1,41 @@
 # TACOS Demonstrations
 
-This directory contains four demonstration scripts that showcase the key capabilities of the TACOS package for computing thermodynamic bounds on chemical reaction networks.
+This directory contains an interactive tutorial notebook and four demonstration scripts that showcase the key capabilities of the TACOS package for computing thermodynamic bounds on chemical reaction networks.
 
 All demos are based on examples from arXiv:2407.11498.
+
+---
+
+## Interactive Tutorial (Start Here!)
+
+**File:** `tutorial.ipynb`
+
+The best way to learn TACOS is through the interactive Jupyter notebook tutorial. It provides a comprehensive, step-by-step introduction using the fuel-driven self-assembly network as a running example.
+
+### What the Tutorial Covers
+
+1. **Setup & Imports** - Installing and importing the package
+2. **Defining a CRN** - Specifying stoichiometry, chemical potentials, and external driving
+3. **Running the Pipeline** - Computing EFMs, affinity bounds, and concentration bounds
+4. **Understanding Results** - Interpreting the output data structures
+5. **Visualizing Affinity Bounds** - Plotting reaction affinity constraints
+6. **Visualizing Concentration Bounds** - Plotting log-ratio constraints
+7. **Validation with Simulations** - Confirming bounds with 300 LDB-consistent steady states
+8. **Chemical Probes** - Analyzing virtual interconversions and their bounds
+
+### Run the Tutorial
+
+```bash
+cd code/crn
+jupyter notebook demos/tutorial.ipynb
+```
+
+Or in JupyterLab:
+```bash
+jupyter lab demos/tutorial.ipynb
+```
+
+---
 
 ## Quick Start
 
