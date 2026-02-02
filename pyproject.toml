@@ -33,7 +33,7 @@ full = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/YOUR_USERNAME/tacos"
+"Homepage" = "https://github.com/Shiling42/tacos"
 "Paper" = "https://arxiv.org/abs/2407.11498"
 
 [build-system]

@@ -34,7 +34,7 @@ For any CRN at steady state:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/tacos.git
+git clone https://github.com/Shiling42/tacos.git
 cd tacos
 
 # Create virtual environment (recommended)
